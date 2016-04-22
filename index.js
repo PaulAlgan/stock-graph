@@ -17,7 +17,8 @@ async.parallel(
   }, startServer
 );
 
-var port = 3000;
+var port = (process.NODE_ENV===production)?80:3000;
+
 
 function startServer() {
   console.log('start server at port: '+port);
