@@ -44,7 +44,7 @@ function createRedisConnection(options, role, callback) {
     host: hostName,   // Redis host
     family: 4,           // 4 (IPv4) or 6 (IPv6)
     password: options.redisPass,
-    db: 1
+    db: 0
   });
 
   redis.on('ready',function(){

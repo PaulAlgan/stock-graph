@@ -4,26 +4,44 @@ var tick1dCollection = require('../collections/Tick1dCollection.js');
 var IORedisAdapter = require('../adapters/IORedisAdapter.js');
 
 function getCompressTicks(query, options, callback){
-  getTicksFromCache(query, options);
-  
-  tick1dCollection.find(query, options).toArray(function(err, results){
-    if (err) return callback(err);
+  getTicksFromCache(query, options, function(cacheResult){
+    if (cacheResult) {
+      console.log('CACHE');
+      return callback(null, cacheResult);
+    }
 
-    var dict = compressTicks(results);
-    callback(null, dict);
+    tick1dCollection.find(query, options).toArray(function(err, results){
+      if (err) return callback(err);
+
+      console.log('QUERY');
+      var dict = compressTicks(results);
+      cacheTicks(query, options, dict);
+      callback(null, dict);
+    });
   });
 }
 
+
+function cacheTicks(query, options, data){
+  var hKey = hKeyFromQuery(query, options);
+  var opt = 'l:'+options.limit;
+  var param = [hKey, opt, JSON.stringify(data)];
+  IORedisAdapter.hset(param);
+}
+
+
 function getTicksFromCache(query, options, callback){
-  IORedisAdapter.hget(hKeyFromQuery(query, options), function(err, result){
-    console.log('hget', result);
+  var hKey = hKeyFromQuery(query, options);
+  var opt = 'l:'+options.limit;
+  IORedisAdapter.hget(hKey, opt, function(err, result){
+    if (!result) return callback(null);
+    callback(JSON.parse(result));
   });
 }
 
 function hKeyFromQuery(query, options){
   var key = 's:'+query.symbol;
-  var options = 'l:'+options.limit;
-  return [key, options];
+  return key
 }
 
 function compressTicks(ticks){
