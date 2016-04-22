@@ -6,14 +6,12 @@ var IORedisAdapter = require('../adapters/IORedisAdapter.js');
 function getCompressTicks(query, options, callback){
   getTicksFromCache(query, options, function(cacheResult){
     if (cacheResult) {
-      console.log('CACHE');
       return callback(null, cacheResult);
     }
 
     tick1dCollection.find(query, options).toArray(function(err, results){
       if (err) return callback(err);
 
-      console.log('QUERY');
       var dict = compressTicks(results);
       cacheTicks(query, options, dict);
       callback(null, dict);
