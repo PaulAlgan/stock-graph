@@ -20,6 +20,7 @@ module.exports = function(req, res){
 
   var limit = 300;
   if (params.p) limit = Math.min(limit, Number(params.p));
+  else limit = 100;
 
   var query = {};
   query.symbol = compoment[2].toUpperCase();
