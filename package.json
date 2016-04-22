@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=production pm2 start -i 2 index.js"
+    "start": "NODE_ENV=production pm2 start -i 2 index.js --watch"
   },
   "author": "",
   "license": "ISC",
