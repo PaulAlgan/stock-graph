@@ -1,8 +1,11 @@
 var moment = require('moment');
 
 var tick1dCollection = require('../collections/Tick1dCollection.js');
+var IORedisAdapter = require('../adapters/IORedisAdapter.js');
 
 function getCompressTicks(query, options, callback){
+  getTicksFromCache(query, options);
+  
   tick1dCollection.find(query, options).toArray(function(err, results){
     if (err) return callback(err);
 
@@ -11,6 +14,17 @@ function getCompressTicks(query, options, callback){
   });
 }
 
+function getTicksFromCache(query, options, callback){
+  IORedisAdapter.hget(hKeyFromQuery(query, options), function(err, result){
+    console.log('hget', result);
+  });
+}
+
+function hKeyFromQuery(query, options){
+  var key = 's:'+query.symbol;
+  var options = 'l:'+options.limit;
+  return [key, options];
+}
 
 function compressTicks(ticks){
   var close=[], high=[], low=[], open=[], volume=[], date=[];
