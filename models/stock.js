@@ -25,6 +25,7 @@ function cacheTicks(query, options, data){
   var opt = 'l:'+options.limit;
   var param = [hKey, opt, JSON.stringify(data)];
   IORedisAdapter.hset(param);
+  IORedisAdapter.expire(hKey, 3600);
 }
 
 
