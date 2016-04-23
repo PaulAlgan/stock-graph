@@ -26,13 +26,19 @@ module.exports = function(req, res){
 
   stockModel.getCompressTicks(query, options, function(err, dict){
     var renderData = {
+      s: query.symbol,
       d: JSON.stringify(dict.date),
       h: JSON.stringify(dict.high),
       l: JSON.stringify(dict.low),
       o: JSON.stringify(dict.open),
       c: JSON.stringify(dict.close),
-      v: JSON.stringify(dict.volume)
+      v: JSON.stringify(dict.volume),
+      ema1: 15,
+      ema2: 30,
+      ema3: 99
+
     }
-    res.render('temp', renderData);
+    // res.render('temp', renderData);
+    res.render('full_plot', renderData);
   })
 }
