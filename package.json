@@ -10,11 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqp": "^0.2.4",
     "async": "^2.0.0-rc.3",
     "express": "^4.13.4",
     "hjs": "0.0.6",
     "ioredis": "^1.15.1",
     "moment": "^2.13.0",
-    "mongodb": "^2.1.16"
+    "mongodb": "^2.1.16",
+    "talib": "^1.0.2"
   }
 }

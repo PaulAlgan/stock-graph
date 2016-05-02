@@ -19,6 +19,25 @@ function getCompressTicks(query, options, callback){
   });
 }
 
+function getTicks(query, options, callback){
+  tick1dCollection.find(query, options).toArray(function(err, results){
+    if (err) return callback(err);
+    callback(null, results);
+  });
+}
+
+function updateTick(tick, callback){
+  var id = objectId(tick._id);
+  tick1dCollection.updateOne(
+    { "_id" : tick._id },
+    {
+      $set: tick
+    }, function(err, result) {
+    if (callback) callback(err, result);
+ });
+
+}
+
 
 function cacheTicks(query, options, data){
   var hKey = hKeyFromQuery(query, options);
@@ -67,4 +86,13 @@ function compressTicks(ticks){
   }
 }
 
+function objectId(id) {
+  if (id.length !== 24) return '';
+  var ObjectID = require('mongodb').ObjectID;
+  var newID = new ObjectID(id);
+  return newID;
+};
+
 exports.getCompressTicks = getCompressTicks;
+exports.getTicks = getTicks;
+exports.updateTick = updateTick;

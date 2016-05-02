@@ -216,7 +216,7 @@ path.middle, path.zero {
   <button>Reset</button>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://techanjs.org/techan.min.js"></script>
-  <script>
+  <script id="data">
 
   var w = window.innerWidth;
 
@@ -661,5 +661,5 @@ path.middle, path.zero {
     svg.select("g.supstances").call(supstance.refresh);
     svg.select("g.tradearrow").call(tradearrow.refresh);
   }
-
+  document.getElementById('data').innerHtml = '';
   </script>
